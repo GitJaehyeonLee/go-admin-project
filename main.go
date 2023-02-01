@@ -14,3 +14,5 @@ func main() {
 
 	app.Listen(":3000")
 }
+
+// air 모듈 추가함 -> 실행 air
