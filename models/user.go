@@ -9,6 +9,9 @@ type User struct {
 	Email     string `json:"email" gorm:"unique"`
 	// 비밀번호 공백 처리
 	Password []byte `json:"-"`
+
+	RoleId uint `json:"role_id"`
+	Role   Role `json:"role" gorm:"foreignKey:RoleId"`
 }
 
 func (user *User) SetPassword(password string) {
