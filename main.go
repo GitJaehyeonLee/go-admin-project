@@ -17,7 +17,7 @@ func main() {
 
 	routes.Setup(app)
 
-	app.Listen(":3000")
+	app.Listen(":8000")
 }
 
 // air 모듈 추가함 -> 실행 air

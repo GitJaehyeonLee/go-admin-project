@@ -114,3 +114,19 @@ func User(c *fiber.Ctx) error {
 
 	return c.JSON(user)
 }
+
+func Logout(c *fiber.Ctx) error {
+	// 쿠키를 제거하기 위해 만료된 쿠키 생성
+	cookie := fiber.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HTTPOnly: true,
+	}
+
+	c.Cookie(&cookie)
+
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
+}
