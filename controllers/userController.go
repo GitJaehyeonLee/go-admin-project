@@ -4,17 +4,32 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go-admin/database"
 	"go-admin/models"
+	"math"
 	"strconv"
 )
 
 // User 관련 기능 정의
 
 func AllUsers(c *fiber.Ctx) error {
+	page, _ := strconv.Atoi(c.Query("page", "1"))
+	limit := 5
+	offset := (page - 1) * limit
+	var total int64
+
 	var users []models.User
 
-	database.DB.Preload("Role").Find(&users)
+	database.DB.Preload("Role").Offset(offset).Limit(limit).Find(&users)
 
-	return c.JSON(&users)
+	database.DB.Model(&models.User{}).Count(&total)
+
+	return c.JSON(fiber.Map{
+		"data": users,
+		"meta": fiber.Map{
+			"total":     total,
+			"page":      page,
+			"last_page": math.Ceil(float64(int(total) / limit)),
+		},
+	})
 }
 
 // 관리자가 사용자 만드는 기능
