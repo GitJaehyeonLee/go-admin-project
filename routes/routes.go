@@ -13,6 +13,9 @@ func Setup(app *fiber.App) {
 	// 밑에는 토큰 검증 필요 / 위는 토큰 검증 불필요.
 	app.Use(middlewares.IsAuthenticated)
 
+	// Rest API 보다 위에 있어야한다. 아래에 :id 가 있어서, id 로 url 을 착각할 수 있다.
+	app.Put("/api/user/info", controllers.UpdateInfo)
+	app.Put("/api/user/password", controllers.UpdatePassword)
 	app.Get("/api/user", controllers.User)
 	app.Post("/api/logout", controllers.Logout)
 
