@@ -66,4 +66,6 @@ func DeleteUser(c *fiber.Ctx) error {
 	}
 
 	database.DB.Delete(&user)
+
+	return nil
 }
