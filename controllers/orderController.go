@@ -72,3 +72,14 @@ func CreateFile(filePath string) error {
 	}
 	return nil
 }
+
+type Sales struct {
+	Date string `json:"date"`
+	SUM  string `json:"sum"`
+}
+
+func Chart(c *fiber.Ctx) error {
+	var sales []Sales
+	database.DB.Raw("SELECT DATE_FORMAT(o.created_at, '%y-%m-%-d') as date, SUM(oi.price * oi.quantity) as sum from orders o JOIN order_items oi on o.id = oi.order_id group by date").Scan(&sales)
+	return c.JSON(sales)
+}
